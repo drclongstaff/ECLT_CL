@@ -121,28 +121,31 @@ downy<-function(d, Time, ini, thresh, off){
 }
 
 ui <- fluidPage(
- 
+  h3(id="Title", "Simple analysis of clot lysis curves, version 0.11"),
+  helpText(h5("Load a csv file, check the raw data and remove noisy wells")),
   fluidRow( column(4,fileInput("file", "Upload data file (CSV)")),
             column(4,textInput("remove_cols", "Remove column nos (comma-separated):", "-1")),
             column(4, helpText("Removed"),textOutput("remove_txt"))
   ),
-  
+  helpText(h5("Modify the baseline and truncate the data as necessary")),
   fluidRow(
     column(3,numericInput("thresh", "Threshold", "0.02", step=0.01)),
     column(3,numericInput("trunc", "Truncate points", "0", step=10)),
-    column(3, numericInput("off", "zero offset", "0", step=0.01)),
+    column(3, numericInput("off", "offset zero baseline", "0", step=0.01)),
     column(3,numericInput("numr", "Plot number of rows", "8"))
   ),
   
-  radioButtons(
+  fluidRow(
+  column(3, radioButtons(
     inputId = "plotsab",
-    label = NULL,
+    label = NULL,#"Analysis generates curves and table of times to 50% lysis",
     choices = c("Raw", 
                 "Analysed"),
-    inline = TRUE
-    
+    inline = TRUE)
+    #helpText(h4("Analysed generates curves and table of times to 50% lysis")),
   ),
-  
+  column(6, helpText(h5("Analysed generates curves and table of times to 50% lysis"))),
+  ),
   fluidRow(
   
   column(12,plotOutput(outputId = "simpleplot"))
