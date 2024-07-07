@@ -121,7 +121,7 @@ downy<-function(d, Time, ini, thresh, off){
 }
 
 ui <- fluidPage(
-  h3(id="Title", h5("Simple analysis of clot lysis curves, version 0.11)
+  h3(id="Title", h5("Simple analysis of clot lysis curves, version 0.11),
   fluidRow( column(4,fileInput("file", "Upload data file (CSV)")),
             column(4,textInput("remove_cols", "Remove column nos (comma-separated):", "-1")),
             column(4, helpText("Removed"),textOutput("remove_txt"))
