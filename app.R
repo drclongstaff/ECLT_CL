@@ -121,7 +121,12 @@ downy<-function(d, Time, ini, thresh, off){
 }
 
 ui <- fluidPage(
-  h3(id="Title", "Simple analysis of clot lysis curves, version 0.11"),
+  h3(id="Title", "Simple analysis of clot lysis curves, version 0.12"),
+  helpText(
+    tags$a(href = "https://github.com/drclongstaff/shiny-clots/blob/master/docs/ECLT-app-notes.pdf", 
+           "help notes", 
+           target = "_blank")
+          ),
   helpText(h5("Load a csv file, check the raw data and remove noisy wells")),
   fluidRow( column(4,fileInput("file", "Upload data file (CSV)")),
             column(4,textInput("remove_cols", "Remove column nos (comma-separated):", "-1")),
