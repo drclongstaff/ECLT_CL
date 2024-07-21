@@ -121,10 +121,7 @@ downy<-function(d, Time, ini, thresh, off){
 }
 
 ui <- fluidPage(
-  #a js to measure the speed of the shiny app operation
-  tags$script(
-    src = "https://cdn.jsdelivr.net/gh/Appsilon/shiny.tictoc@v0.2.0/shiny-tic-toc.min.js"
-  ),
+ 
   h3(id="Title", "Simple analysis of clot lysis curves, version 0.12a"),
   helpText(
     tags$a(href = "https://github.com/drclongstaff/shiny-clots/blob/master/docs/ECLT-app-notes.pdf", 
