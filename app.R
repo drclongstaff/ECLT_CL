@@ -2,7 +2,7 @@
 library(shiny)
 #library(purrr)
 #library(dplyr)
-options(shiny.maxRequestSize=30*1024^2)
+
 #function for truncating data
 trunc_plateFun <- function(tPLATE, TR){
   shortPlate <- head(tPLATE, n=nrow(tPLATE)-TR)
@@ -10,21 +10,6 @@ trunc_plateFun <- function(tPLATE, TR){
 #function for adjusting baseline
 BaselineOff2 <- function(n, off) {
   n <- n-min(n)-off
-}
-
-getExtension <- function(file){ 
-  ex <- strsplit(basename(file), split="\\.")[[1]]
-  return(ex[-1])
-} 
-
-load_file <- function(NAME, PATH, SHEET){
-  
-  ext <- getExtension(NAME)
-  switch(ext,
-         xlsx = openxlsx::read.xlsx(PATH, sheet = SHEET),
-         csv = read.csv(PATH),
-         validate("Invalid file. Please upload a data file")
-  )
 }
 
 #function for raw data plot
@@ -117,16 +102,15 @@ ui <- fluidPage(
   tags$script(
     src = "https://cdn.jsdelivr.net/gh/Appsilon/shiny.tictoc@v0.2.0/shiny-tic-toc.min.js"
   ),
-  h3(id="Title", "Simple analysis of clot lysis curves, version 0.15"),
+  h3(id="Title", "Simple analysis of clot lysis curves, version 0.13"),
   helpText(
     tags$a(href = "https://github.com/drclongstaff/shiny-clots/blob/master/docs/ECLT-app-notes.pdf", 
            "help notes", target = "_blank")
           ),
   helpText(h5("Load a csv file, check the raw data and remove noisy wells")),
-  fluidRow( column(3,fileInput("file", "Upload data file (csv or xlsx)")),
-            column(2,numericInput("sheet", "Excel sheet", value = 1, min = 1, step = 1) ),
-            column(4,textInput("remove_cols", "Remove col nos (comma-separated):", "-1")),
-            column(3, helpText("Removed"),textOutput("remove_txt"))
+  fluidRow( column(4,fileInput("file", "Upload data file (CSV)")),
+            column(4,textInput("remove_cols", "Remove column nos (comma-separated):", "-1")),
+            column(4, helpText("Removed"),textOutput("remove_txt"))
           ),
   helpText(h5("Modify the baseline and truncate the data as necessary")),
   fluidRow(
@@ -158,16 +142,15 @@ ui <- fluidPage(
 
 server <- function(input, output) {
     #simple loading data function
-  data <- reactive({
-    
-    inputFile <- input$file
-    if (is.null(input$file)) 
-    df <- read.csv("data/Copy of Clot Lysis Data.csv")
-    else(
-      df <- load_file(input$file$name, input$file$datapath, input$sheet)  
-        )
+   data <- reactive({
+        req(input$file)
+        inputFile <- input$file
+        df <- read.csv(input$file$datapath, header = TRUE)
+        #df <- openxlsx::read.xlsx(input$file$datapath, sheet = 1)
+        #remove any non-numeric columns
         df_numeric <- df[, sapply(df, is.numeric)]
         return(df_numeric)
+        #return(df)
           })
    
     #function to remove selected columns
