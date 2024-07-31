@@ -21,7 +21,7 @@ load_file <- function(NAME, PATH, SHEET){
   
   ext <- getExtension(NAME)
   switch(ext,
-        # xlsx = openxlsx::read.xlsx(PATH, sheet = SHEET),
+         xlsx = readxl::read_excel(PATH, sheet = SHEET),
          csv = read.csv(PATH),
          validate("Invalid file. Please upload a data file")
   )
@@ -29,7 +29,7 @@ load_file <- function(NAME, PATH, SHEET){
 
 #function for raw data plot
 base_plotFun <- function(PLATE, NUMR) {
-  
+  PLATE <- as.data.frame(PLATE)
   Time<-PLATE[[1]] #time in the first column
   plateData<-PLATE[,-1] #the absorbance data without the time column
   absWells <- length(plateData[1,]) #the no. of columns of the absorbance data
