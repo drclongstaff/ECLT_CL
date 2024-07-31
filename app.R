@@ -21,7 +21,7 @@ load_file <- function(NAME, PATH, SHEET){
   
   ext <- getExtension(NAME)
   switch(ext,
-         xlsx = readxl::read_excel(PATH, sheet = SHEET),
+         #add something to read excel files,
          csv = read.csv(PATH),
          validate("Invalid file. Please upload a data file")
   )
@@ -29,7 +29,7 @@ load_file <- function(NAME, PATH, SHEET){
 
 #function for raw data plot
 base_plotFun <- function(PLATE, NUMR) {
-  PLATE <- as.data.frame(PLATE)
+  
   Time<-PLATE[[1]] #time in the first column
   plateData<-PLATE[,-1] #the absorbance data without the time column
   absWells <- length(plateData[1,]) #the no. of columns of the absorbance data
@@ -123,10 +123,10 @@ ui <- fluidPage(
            "help notes", target = "_blank")
           ),
   helpText(h5("Load a csv file, check the raw data and remove noisy wells")),
-  fluidRow( column(3,fileInput("file", "Upload data file (csv or xlsx)")),
-            column(2,numericInput("sheet", "Excel sheet", value = 1, min = 1, step = 1) ),
+  fluidRow( column(4,fileInput("file", "Upload csv data file")),
+            #column(2,numericInput("sheet", "Excel sheet", value = 1, min = 1, step = 1) ),
             column(4,textInput("remove_cols", "Remove col nos (comma-separated):", "-1")),
-            column(3, helpText("Removed"),textOutput("remove_txt"))
+            column(4, helpText("Removed"),textOutput("remove_txt"))
           ),
   helpText(h5("Modify the baseline and truncate the data as necessary")),
   fluidRow(
