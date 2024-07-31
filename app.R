@@ -21,7 +21,7 @@ load_file <- function(NAME, PATH, SHEET){
   
   ext <- getExtension(NAME)
   switch(ext,
-         xlsx = openxlsx::read.xlsx(PATH, sheet = SHEET),
+        # xlsx = openxlsx::read.xlsx(PATH, sheet = SHEET),
          csv = read.csv(PATH),
          validate("Invalid file. Please upload a data file")
   )
@@ -162,7 +162,7 @@ server <- function(input, output) {
     
     inputFile <- input$file
     if (is.null(input$file)) 
-    df <- read.csv("./data/Copy of Clot Lysis Data.csv")
+   df <- read.csv("./data/Copy of Clot Lysis Data.csv")
     else(
       df <- load_file(input$file$name, input$file$datapath, input$sheet)  
         )
