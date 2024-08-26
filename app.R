@@ -12,9 +12,20 @@ BaselineOff2 <- function(n, off) {
   n <- n-min(n)-off
 }
 
-getExtension <- function(file){ 
-  ex <- strsplit(basename(file), split="\\.")[[1]]
-  return(ex[-1])
+getExtension <- function(file) {
+  # Get the filename without the path
+  filename <- basename(file)
+  
+  # Find the position of the last period
+  last_dot <- regexpr("\\.([^.]+)$", filename)
+  
+  if (last_dot == -1) {
+    # No extension found
+    return("")
+  } else {
+    # Extract and return the extension
+    return(substr(filename, last_dot + 1, nchar(filename)))
+  }
 } 
 
 load_file <- function(NAME, PATH, SHEET){
@@ -22,6 +33,7 @@ load_file <- function(NAME, PATH, SHEET){
   ext <- getExtension(NAME)
   switch(ext,
          #add something to read excel files,
+         txt = read.delim(PATH),
          csv = read.csv(PATH),
          validate("Invalid file. Please upload a data file")
   )
@@ -117,15 +129,15 @@ ui <- fluidPage(
   tags$script(
     src = "https://cdn.jsdelivr.net/gh/Appsilon/shiny.tictoc@v0.2.0/shiny-tic-toc.min.js"
   ),
-  h3(id="Title", "Simple analysis of clot lysis curves, version 0.15"),
+  h3(id="Title", "Simple analysis of clot lysis curves, version 0.16"),
   helpText(
     tags$a(href = "https://github.com/drclongstaff/shiny-clots/blob/master/docs/ECLT-app-notes.pdf", 
            "help notes", target = "_blank")
           ),
   helpText(h5("Load a csv file, check the raw data and remove noisy wells")),
-  fluidRow( column(4,fileInput("file", "Upload csv data file")),
+  fluidRow( column(4,fileInput("file", "Upload csv or txt data file")),
             #column(2,numericInput("sheet", "Excel sheet", value = 1, min = 1, step = 1) ),
-            column(4,textInput("remove_cols", "Remove col nos (comma-separated):", "-1")),
+            column(4,textInput("remove_cols", "Remove well nos (comma-separated)", "-1")),
             column(4, helpText("Removed"),textOutput("remove_txt"))
           ),
   helpText(h5("Modify the baseline and truncate the data as necessary")),
@@ -168,6 +180,7 @@ server <- function(input, output) {
         )
         df_numeric <- df[, sapply(df, is.numeric)]
         return(df_numeric)
+        #return(df)
           })
    
     #function to remove selected columns
@@ -239,6 +252,7 @@ server <- function(input, output) {
     })
     #make the appropriate table
     output$data_table <- renderTable({
+      if (is.null(input$plotsab)) return()
       switch(input$plotsab,
            "Raw"=data(),
            #"Analysed"=matrix((TabResdown() %>% select(lys.time) %>% pull()), nrow = input$numr, byrow = TRUE)
