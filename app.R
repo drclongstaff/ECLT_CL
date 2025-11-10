@@ -3,12 +3,13 @@ library(shiny)
 source("./Functions/baseDowny.R")
 source("./Functions/smooth.R")
 source("./Functions/loadFile.R")
-
+ThisApp <- "Shiny App for ECLT curve analysis"
+ThisVer <- "2.0"
 
 ui <- fluidPage(
   includeCSS("./www/styles3.css"), # make a few changes to the colours and fonts
 
-  tags$h2("Shiny App for ECLT curve analysis, version 2.0", align = "center"),
+  tags$h2(ThisApp, ThisVer, align = "center"),
   #tags$a(href = "./docs/ECLT-app-notes.pdf", h5("Help notes")),
   #tags$a(href = "https://drclongstaff.github.io/shiny-clots/docs/ECLT-app-notes.pdf", h5("Help notes")),
   tags$h4("Load a data file, set plotting and fitting parameters", align = "center"),
@@ -62,7 +63,25 @@ ui <- fluidPage(
           style = "overflow-y: auto; max-height: 800px;",
           DT::DTOutput("resultsTable")
         ),
-        downloadButton("downloadData", "Download table", style = "margin-top: 10px;")
+        downloadButton("downloadData", "Download table", style = "margin-top: 10px;"),
+        helpText(h3(" ")),
+        #some blurb and promotional stuff
+        helpText(h5("Please cite this reference in publications:")),
+        helpText(h5("Longstaff C, ", 
+                    tags$a(href="https://doi.org/10.1111/jth.13656","J Thromb Haemost, 15: 1044-6, 2017")
+        )),
+        
+        #tags$i("Please contact me with issues relating to:"),
+        helpText(h5("Please contact me",
+                    tags$a(href="mailto: drclongstaff@gmail.com", "drclongstaff@gmail.com"), 
+                    "for issues relating to:")),
+        helpText(h5(ThisApp, ThisVer,
+                    " last accessed", Sys.Date()),
+        ),
+        
+        tags$a(href="https://drclongstaff.github.io/shiny-clots/", "Links to other apps and help notes"),
+        tags$br(),
+        tags$a(href="https://www.youtube.com/@colinlongstaff7270", "Youtube channel of help videos")
       )
     )
   )
