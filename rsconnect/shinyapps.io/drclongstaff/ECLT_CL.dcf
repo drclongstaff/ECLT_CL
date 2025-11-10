@@ -1,0 +1,13 @@
+name: ECLT_CL
+title: ECLT_CL
+username: drclongstaff
+account: drclongstaff
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 15976587
+bundleId: 11135808
+url: https://drclongstaff.shinyapps.io/ECLT_CL/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .github/. .._|.github/workflows/. .._|.github/workflows/deploy-app.yaml|.github/workflows/static.yml|appold.R|data/myDat|docs/. .._|docs/Copy of Clot Lysis Data.csv

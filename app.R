@@ -9,7 +9,8 @@ ui <- fluidPage(
   includeCSS("./www/styles3.css"), # make a few changes to the colours and fonts
 
   tags$h2("Shiny App for ECLT curve analysis, version 2.0", align = "center"),
-  tags$a(href = "./docs/ECLT-app-notes.pdf", h5("Help notes")),
+  #tags$a(href = "./docs/ECLT-app-notes.pdf", h5("Help notes")),
+  #tags$a(href = "https://drclongstaff.github.io/shiny-clots/docs/ECLT-app-notes.pdf", h5("Help notes")),
   tags$h4("Load a data file, set plotting and fitting parameters", align = "center"),
   fluidRow(
     column(4, fileInput("file", "Upload csv or txt")),
