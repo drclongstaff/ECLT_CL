@@ -4,7 +4,7 @@ source("./Functions/baseDowny.R")
 source("./Functions/smooth.R")
 source("./Functions/loadFile.R")
 ThisApp <- "Shiny App for ECLT curve analysis"
-ThisVer <- "2.1a"
+ThisVer <- "2.1b"
 
 ui <- fluidPage(
   includeCSS("./www/styles3.css"), # make a few changes to the colours and fonts
